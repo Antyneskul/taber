@@ -1,0 +1,31 @@
+@import "../../assets/fonts/flaticon/flaticon.css";
+
+.Weather {
+    position: absolute;
+    width: 100%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Weather .condition span {
+    display: inline-block;
+}
+
+.Weather .condition [class^="flaticon-"]:before {
+    font-size: 10rem;
+}
+
+.Weather .temp {
+    font-size: 5rem;
+}
+
+.Weather .wind  span{
+    padding-right: 15px;
+}
+
+.Weather div {
+    margin: 0 40px;
+}
+

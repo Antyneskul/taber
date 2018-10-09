@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import Clock from "./componets/Clock/Clock";
 import Background from "./componets/Background/Background";
+import Weather from './componets/Weather/Weather';
 
 class App extends Component {
   render() {
@@ -9,6 +10,7 @@ class App extends Component {
       <React.Fragment>
         <div className="App">
           <Background/>
+          <Weather/>
           <Clock/>
         </div>
       </React.Fragment>
