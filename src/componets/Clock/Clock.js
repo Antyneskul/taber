@@ -1,7 +1,8 @@
 import React from 'react';
-import './Clock.css';
-
 import moment from 'moment';
+
+import Hexagon from '../Background/Hexagon'
+import './Clock.css';
 
 class Clock extends React.Component {
   state = {
@@ -23,12 +24,14 @@ class Clock extends React.Component {
   render() {
     return (
       <div className={'Clock'}>
-        <div className={'date'}>
-          {this.state.date}
-        </div>
-        <div className={'time'}>
-          {this.state.time}
-        </div>
+        <Hexagon>
+          <div className={'date'}>
+            {this.state.date}
+          </div>
+          <div className={'time'}>
+            {this.state.time}
+          </div>
+        </Hexagon>
       </div>
     );
   }

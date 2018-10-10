@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import './Weather.css';
+import Hexagon from '../Background/Hexagon';
 
 const APP_ID ="eb5808ab05f337d65c0d10f174014a7b";
 const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?&units=metric&appid=${APP_ID}`;
@@ -111,14 +112,20 @@ class Weather extends React.Component {
                 {
                     (this.state.forecast) ? 
                     <div className='Weather'>
-                        <div className={'condition'}>
-                            <span className={`flaticon-${this.getIcon(this.state.forecast.weather[0].id)}`}></span>
-                        </div>
-                        <div className={'temp'}>{Math.floor(this.state.forecast.main.temp)}°</div>
-                        <div className={'wind'}>
-                            <span className={'flaticon-breeze'}></span>
-                            <span>{this.state.forecast.wind.speed} km/h</span>
-                        </div>
+                        <Hexagon>
+                            <div className={'forecast'}>
+                                <div className={'condition'}>
+                                    <span className={`flaticon-${this.getIcon(this.state.forecast.weather[0].id)}`}></span>
+                                </div>
+                                <div className={'info'}>
+                                    <div className={'temp'}>{Math.floor(this.state.forecast.main.temp)}°</div>
+                                    <div className={'wind'}>
+                                        <span className={'flaticon-breeze'}></span>
+                                        <span>{this.state.forecast.wind.speed} km/h</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </Hexagon>    
                     </div>
                     : null
                 }

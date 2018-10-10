@@ -8,7 +8,7 @@ class Background extends React.Component {
 
     const imgData = localStorage.getItem('img');
     this.state = {
-      img: imgData ? imgData : 'https://source.unsplash.com/random/1920x1080/?berlin'
+      img: imgData ? imgData : 'https://source.unsplash.com/random/1920x1080/?berlin,dark'
     }
   }
 

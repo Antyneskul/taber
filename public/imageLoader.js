@@ -1,6 +1,6 @@
 const img = new Image();
 img.crossOrigin = "anonymous";
-img.src = 'https://source.unsplash.com/random/1920x1080/?berlin';
+img.src = 'https://source.unsplash.com/random/1920x1080/?berlin,dark';
 
 img.addEventListener('load', function () {
   const canvas = document.createElement('canvas');

@@ -3,14 +3,8 @@
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    background: url("hexagon.svg") 50% 50% no-repeat;
-    background-size: 35% 35%;
     color: #fff;
     position: relative;
-}
-
-.Clock div {
-    margin-top: 15px;
 }
 
 .Clock .date {
