@@ -4,6 +4,7 @@
     position: absolute;
     /* width: 100%; */
     color: #fff;
+    margin-top: 25px;
 }
 
 .Weather .condition span {
