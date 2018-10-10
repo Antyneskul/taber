@@ -7,9 +7,9 @@ const Hexagon = props => {
         const brightness = getBrightness();
 
         return (brightness && Number(brightness) > 180) ? 'light' : '';
-    }
+    };
     return (
-        <div className={`Hexagon ${getBrightnessClassName()}`}>
+        <div className={`Hexagon ${getBrightnessClassName()} ${props.hexagonSize}`}>
             {props.children}
         </div>
     )

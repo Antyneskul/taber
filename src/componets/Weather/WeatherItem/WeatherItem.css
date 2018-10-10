@@ -1,0 +1,47 @@
+.WeatherItem:nth-child(2n+2) {
+    /*margin-top: 25px;*/
+}
+
+
+.WeatherItem .condition {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.WeatherItem .condition [class^="flaticon-"]:before {
+    font-size: 4rem;
+}
+
+.WeatherItem .temp {
+    font-size: 3rem;
+}
+
+.WeatherItem .wind {
+    margin: 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+}
+
+.WeatherItem .forecast {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.WeatherItem .forecast .info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.WeatherItem .time div {
+    font-weight: bold;
+    margin-top: 2px;
+}
+

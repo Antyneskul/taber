@@ -24,7 +24,7 @@ class Clock extends React.Component {
   render() {
     return (
       <div className={'Clock'}>
-        <Hexagon>
+        <Hexagon hexagonSize={'big'}>
           <div className={'date'}>
             {this.state.date}
           </div>

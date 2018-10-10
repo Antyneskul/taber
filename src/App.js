@@ -10,8 +10,8 @@ class App extends Component {
       <React.Fragment>
         <div className="App">
           <Background/>
-          <Weather/>
-          <Clock/>
+            <Clock/>
+            <Weather/>
         </div>
       </React.Fragment>
     );

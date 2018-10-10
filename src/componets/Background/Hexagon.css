@@ -1,4 +1,15 @@
 .Hexagon {
     background: url("../../assets/img/hexagon.svg") 50% 50% no-repeat;
+}
+
+.Hexagon.big {
     padding: 100px;
+}
+
+.Hexagon.medium {
+    padding: 80px;
+}
+
+.Hexagon.small {
+    padding: 50px;
 }
