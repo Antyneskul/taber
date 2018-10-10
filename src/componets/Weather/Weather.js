@@ -80,7 +80,6 @@ class Weather extends React.Component {
 
         //Description
         //https://openweathermap.org/weather-conditions
-        const callTime = moment().format();
 
         const calledAt = localStorage.getItem('calledAt');
         const forecast = localStorage.getItem('forecast');
@@ -117,13 +116,13 @@ class Weather extends React.Component {
                                 <div className={'condition'}>
                                     <span className={`flaticon-${this.getIcon(this.state.forecast.weather[0].id)}`}></span>
                                 </div>
-                                <div className={'info'}>
+                          
                                     <div className={'temp'}>{Math.floor(this.state.forecast.main.temp)}°</div>
                                     <div className={'wind'}>
                                         <span className={'flaticon-breeze'}></span>
                                         <span>{this.state.forecast.wind.speed} km/h</span>
                                     </div>
-                                </div>
+                                
                             </div>
                         </Hexagon>    
                     </div>

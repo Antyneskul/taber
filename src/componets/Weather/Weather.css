@@ -4,7 +4,7 @@
     position: absolute;
     /* width: 100%; */
     color: #fff;
-    margin-top: 25px;
+    margin: 25px 0 0 25px;
 }
 
 .Weather .condition span {
@@ -19,8 +19,9 @@
     font-size: 5rem;
 }
 
-.Weather .wind  span{
+.Weather .wind  span {
     font-size: 2rem;
+    margin-left: 10px;
 }
 
 .Weather .forecast {
