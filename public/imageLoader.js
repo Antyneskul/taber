@@ -33,10 +33,9 @@ img.addEventListener('load', function () {
 
   const brightness = Math.floor(colorSum / (img.width * img.height));
 
-  localStorage.setItem('brightness', brightness);
-
   try {
     localStorage.setItem('img', dataUrl);
+    localStorage.setItem('brightness', brightness);
   } catch (e) {
     console.log('Image is too big')
   }
