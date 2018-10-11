@@ -102,8 +102,9 @@ class Weather extends React.Component {
                 window.fetch(`${WEATHER_API_URL}&zip=${this.state.zip}`).then(response => response.json()),
                 window.fetch(`${FORECAST_API_URL}&q=${this.state.zip}`).then(response => response.json())
             ]).then(responses => {
+                const elementsToStore =  (window.outerWidth > 1500) ? 5 : 4;
                 const current = responses.shift();
-                const forecast = responses.shift().list.slice(0, 5);
+                const forecast = responses.shift().list.slice(0, elementsToStore);
 
                 localStorage.setItem('calledAt', moment().format());
                 localStorage.setItem('current', JSON.stringify(current));
