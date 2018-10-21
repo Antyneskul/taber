@@ -5,7 +5,3 @@
     flex-direction: column;
     justify-content: space-around;
 }
-
-.App.light .Hexagon {
-    background-image: url("./assets/img/hexagon-light.svg");
-}

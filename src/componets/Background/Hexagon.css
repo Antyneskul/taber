@@ -2,6 +2,10 @@
     background: url("../../assets/img/hexagon.svg") 50% 50% no-repeat;
 }
 
+.dark .Hexagon {
+    background-image:url("../../assets/img/hexagon-light.svg");
+}
+
 .Hexagon.big {
     padding: 100px;
 }

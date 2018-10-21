@@ -7,7 +7,7 @@ import Weather from './componets/Weather/Weather';
 const getBrightnessClassName = () => {
   const brightness = localStorage.getItem('brightness');
 
-  return (brightness && Number(brightness) < 90) ? 'light' : '';
+  return (brightness && Number(brightness) < 90) ? 'dark' : '';
 };
 
 class App extends Component {
