@@ -7,6 +7,9 @@ const APP_ID = "eb5808ab05f337d65c0d10f174014a7b";
 const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?units=metric&appid=${APP_ID}`;
 const FORECAST_API_URL = `https://api.openweathermap.org/data/2.5/forecast?units=metric&appid=${APP_ID}`;
 
+const now = moment();
+const inFuture = ({ dt_txt }) => moment(dt_txt).diff(now, 'hours') >= 1;
+
 //TODO: reduce repeating
 const iconStatusMap = {
     200: 'lightning',
@@ -87,8 +90,7 @@ class Weather extends React.Component {
         const calledAt = localStorage.getItem('calledAt');
         const forecast = localStorage.getItem('forecast');
         const current = localStorage.getItem('current');
-
-
+        
         if (calledAt && moment().diff(moment(calledAt), 'minutes') < 10) {
             this.setState(() => ({
                 current: JSON.parse(current),
@@ -98,14 +100,13 @@ class Weather extends React.Component {
             console.log('local forecast', JSON.parse(forecast));
             console.log('local current', JSON.parse(current));
         } else {
-            Promise.all([
-                window.fetch(`${WEATHER_API_URL}&zip=${this.state.zip}`).then(response => response.json()),
-                window.fetch(`${FORECAST_API_URL}&q=${this.state.zip}`).then(response => response.json())
-            ]).then(responses => {
+            (async () => {
                 const elementsToStore =  (window.outerWidth > 1500) ? 5 : 4;
-                const current = responses.shift();
-                const forecast = responses.shift().list.slice(0, elementsToStore);
-
+                const current = await window.fetch(`${WEATHER_API_URL}&zip=${this.state.zip}`).then(response => response.json());
+                const forecast = await window.fetch(`${FORECAST_API_URL}&q=${this.state.zip}`)
+                    .then(response => response.json())
+                    .then(result => result.list.filter(inFuture).slice(0, elementsToStore));
+                
                 localStorage.setItem('calledAt', moment().format());
                 localStorage.setItem('current', JSON.stringify(current));
                 localStorage.setItem('forecast', JSON.stringify(forecast));
@@ -115,9 +116,9 @@ class Weather extends React.Component {
                     forecast
                 }));
 
-                console.log('call', current);
-                console.log('call', forecast);
-            });
+                console.log('call', current, 'current');
+                console.log('call', forecast, 'forecast');
+            })();
         }
     }
 
