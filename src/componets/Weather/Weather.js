@@ -70,7 +70,7 @@ const iconStatusMap = {
 
 class Weather extends React.Component {
     state = {
-        zip: '13581,de',
+        city: 'Berlin,de',
         forecast: null,
         current: null
     };
@@ -79,10 +79,10 @@ class Weather extends React.Component {
 
     componentDidMount() {
         //Current 
-        //https://api.openweathermap.org/data/2.5/weather?zip=13581,de&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
+        //https://api.openweathermap.org/data/2.5/weather?city=Berlin,de&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
 
         //5days
-        //https://api.openweathermap.org/data/2.5/forecast?q=13581&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
+        //https://api.openweathermap.org/data/2.5/forecast?q=Berlin,de&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
 
         //Description
         //https://openweathermap.org/weather-conditions
@@ -102,8 +102,8 @@ class Weather extends React.Component {
         } else {
             (async () => {
                 const elementsToStore =  (window.outerWidth > 1500) ? 5 : 4;
-                const current = await window.fetch(`${WEATHER_API_URL}&zip=${this.state.zip}`).then(response => response.json());
-                const forecast = await window.fetch(`${FORECAST_API_URL}&q=${this.state.zip}`)
+                const current = await window.fetch(`${WEATHER_API_URL}&q=${this.state.city}`).then(response => response.json());
+                const forecast = await window.fetch(`${FORECAST_API_URL}&q=${this.state.city}`)
                     .then(response => response.json())
                     .then(result => result.list.filter(inFuture).slice(0, elementsToStore));
                 
