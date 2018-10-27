@@ -68,12 +68,15 @@ const iconStatusMap = {
   805: 'cloudy-day'
 };
 
+const getElementsToStore = () =>  Math.floor(window.outerWidth / 300) - 1;
 class Weather extends React.Component {
   state = {
     zip: '13581,de',
     forecast: null,
-    current: null
+    current: null,
+    elementsToStore: getElementsToStore()
   };
+
 
   getIcon = id => iconStatusMap[id] ? iconStatusMap[id] : 'temperature';
 
@@ -91,6 +94,12 @@ class Weather extends React.Component {
     const forecast = localStorage.getItem('forecast');
     const current = localStorage.getItem('current');
 
+    window.onresize = () => {
+      this.setState(() => ({
+        elementsToStore: getElementsToStore()
+      }))
+    }
+
     if (calledAt && moment().diff(moment(calledAt), 'minutes') < 10) {
       this.setState(() => ({
         current: JSON.parse(current),
@@ -101,11 +110,10 @@ class Weather extends React.Component {
       console.log('local current', JSON.parse(current));
     } else {
       (async () => {
-        const elementsToStore = (window.outerWidth > 1500) ? 5 : 4;
         const current = await window.fetch(`${WEATHER_API_URL}&zip=${this.state.zip}`).then(response => response.json());
         const forecast = await window.fetch(`${FORECAST_API_URL}&q=${this.state.zip}`)
           .then(response => response.json())
-          .then(result => result.list.filter(inFuture).slice(0, elementsToStore));
+          .then(result => result.list.filter(inFuture));
 
         localStorage.setItem('calledAt', moment().format());
         localStorage.setItem('current', JSON.stringify(current));
@@ -140,7 +148,7 @@ class Weather extends React.Component {
         }
         {
           (this.state.forecast) ?
-            this.state.forecast.map(it => (
+            this.state.forecast.slice(0, this.state.elementsToStore).map(it => (
               <WeatherItem
                 temperature={Math.floor(it.main.temp)}
                 icon={this.getIcon(it.weather[0].id)}
