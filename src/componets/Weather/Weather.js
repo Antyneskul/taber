@@ -8,7 +8,7 @@ const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?units=m
 const FORECAST_API_URL = `https://api.openweathermap.org/data/2.5/forecast?units=metric&appid=${APP_ID}`;
 
 const now = moment();
-const inFuture = ({dt_txt}) => moment(dt_txt).diff(now, 'hours') >= 1;
+const inFuture = ({ dt_txt }) => moment(dt_txt).diff(now, 'hours') >= 1;
 
 //TODO: reduce repeating
 const iconStatusMap = {
@@ -70,22 +70,21 @@ const iconStatusMap = {
 
 const getElementsToStore = () =>  Math.floor(window.outerWidth / 300) - 1;
 class Weather extends React.Component {
-  state = {
-    zip: '13581,de',
-    forecast: null,
-    current: null,
+    state = {
+        city: 'Berlin,de',
+        forecast: null,
+        current: null,
     elementsToStore: getElementsToStore()
   };
-
 
   getIcon = id => iconStatusMap[id] ? iconStatusMap[id] : 'temperature';
 
   componentDidMount() {
     //Current
-    //https://api.openweathermap.org/data/2.5/weather?zip=13581,de&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
+    //https://api.openweathermap.org/data/2.5/weather?city=Berlin,de&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
 
     //5days
-    //https://api.openweathermap.org/data/2.5/forecast?q=13581&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
+    //https://api.openweathermap.org/data/2.5/forecast?q=Berlin,de&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
 
     //Description
     //https://openweathermap.org/weather-conditions
@@ -110,8 +109,8 @@ class Weather extends React.Component {
       console.log('local current', JSON.parse(current));
     } else {
       (async () => {
-        const current = await window.fetch(`${WEATHER_API_URL}&zip=${this.state.zip}`).then(response => response.json());
-        const forecast = await window.fetch(`${FORECAST_API_URL}&q=${this.state.zip}`)
+        const current = await window.fetch(`${WEATHER_API_URL}&q=${this.state.city}`).then(response => response.json());
+        const forecast = await window.fetch(`${FORECAST_API_URL}&q=${this.state.city}`)
           .then(response => response.json())
           .then(result => result.list.filter(inFuture));
 
