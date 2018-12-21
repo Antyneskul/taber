@@ -1,3 +1,3 @@
-#Taber 
+# Taber 
 
-##Simple New Tab Chrome extension that shows nice background image and weather forecast
+## Simple New Tab Chrome extension that shows nice background image and weather forecast
