@@ -8,7 +8,7 @@ const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?units=m
 const FORECAST_API_URL = `https://api.openweathermap.org/data/2.5/forecast?units=metric&appid=${APP_ID}`;
 
 const now = moment();
-const inFuture = ({ dt_txt }) => moment(dt_txt).diff(now, 'hours') >= 1;
+const inFuture = ({dt_txt}) => moment(dt_txt).diff(now, 'hours') >= 1;
 
 //TODO: reduce repeating
 const iconStatusMap = {
@@ -68,12 +68,13 @@ const iconStatusMap = {
   805: 'cloudy-day'
 };
 
-const getElementsToStore = () =>  Math.floor(window.outerWidth / 300) - 1;
+const getElementsToStore = () => Math.floor(window.innerWidth / 300) - 1;
+
 class Weather extends React.Component {
-    state = {
-        city: 'Berlin,de',
-        forecast: null,
-        current: null,
+  state = {
+    city: 'Berlin,de',
+    forecast: null,
+    current: null,
     elementsToStore: getElementsToStore()
   };
 
@@ -97,7 +98,7 @@ class Weather extends React.Component {
       this.setState(() => ({
         elementsToStore: getElementsToStore()
       }))
-    }
+    };
 
     if (calledAt && moment().diff(moment(calledAt), 'minutes') < 10) {
       this.setState(() => ({
