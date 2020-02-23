@@ -1,41 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
+import { LocationContext } from '../../contextProviders/LocationContext';
 
 import Hexagon from '../Background/Hexagon'
 import './Clock.css';
 
-class Clock extends React.Component {
-  state = {
-    time: moment().format('HH:mm'),
-    date: moment().format('DD MMM YYYY')
-  };
+const Clock = () => {
+    const getDateData = () => ({
+        time: moment().format('HH:mm'),
+        date: moment().format('DD MMM YYYY')
+    });
 
-  tick = () => {
-    this.setState(() => ({
-      time: moment().format('HH:mm'),
-      date: moment().format('DD MMM YYYY')
-    }));
-  };
+    const location = useContext(LocationContext);
 
-  componentDidMount() {
-    setInterval(() => this.tick(), 1000);
-  }
 
-  render() {
+    const [data, setData] = useState(getDateData());
+
+    useEffect(() => {
+        setInterval(() => {
+            setData(getDateData());
+        }, 1000);
+    }, [data]);
+
     return (
-      <div className={'Clock'}>
-        <Hexagon hexagonSize={'big'}>
-          <div className={'date'}>
-            {this.state.date}
-          </div>
-          <div className={'time'}>
-            {this.state.time}
-          </div>
-        </Hexagon>
-      </div>
+        <div className={'Clock'}>
+            <Hexagon hexagonSize={'big'}>
+                <div className={'date'}>
+                    {data.date}
+                </div>
+                <div className={'time'}>
+                    {data.time}
+                </div>
+                <div className={'city'}>
+                    {location.city}
+                </div>
+            </Hexagon>
+        </div>
     );
-  }
-}
+};
 
 export default Clock;
 

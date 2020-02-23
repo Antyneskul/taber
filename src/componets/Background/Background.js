@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Background.css';
 
-class Background extends React.Component {
-  constructor(props) {
-    super(props);
+const Background = () => {
+    const [backgroundImage, setBackgroundImage] = useState(localStorage.getItem('imgData'));
 
-    const imgData = localStorage.getItem('img');
-    this.state = {
-      img: imgData ? imgData : localStorage.getItem('imgSrc')
-    }
-  }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const imgData = localStorage.getItem('imgData');
+            if(!backgroundImage && imgData){
+                setBackgroundImage(localStorage.getItem('imgData'));
+                clearInterval(interval);
+            }
+        }, 1000)
+    }, [backgroundImage]);
 
-  render() {
-    return (
-      <div className={'Background'} style={{backgroundImage: `url(${this.state.img})`}}></div>
-    )
-  }
-}
+    return <div className={'Background'}
+                style={{backgroundImage: `url(${backgroundImage}`}}/>;
+};
 
 export default Background;

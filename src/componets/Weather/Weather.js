@@ -1,170 +1,142 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import moment from 'moment';
 import './Weather.css';
+import { LocationContext } from '../../contextProviders/LocationContext';
 import WeatherItem from "./WeatherItem/WeatherItem";
 
-const APP_ID = "eb5808ab05f337d65c0d10f174014a7b";
+const APP_ID = process.env.REACT_APP_WEATHER_APP_ID;
 const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?units=metric&appid=${APP_ID}`;
 const FORECAST_API_URL = `https://api.openweathermap.org/data/2.5/forecast?units=metric&appid=${APP_ID}`;
 
 const now = moment();
 const inFuture = ({dt_txt}) => moment(dt_txt).diff(now, 'hours') >= 1;
-
-//TODO: reduce repeating
-const iconStatusMap = {
-  200: 'lightning',
-  201: 'lightning',
-  202: 'lightning',
-  210: 'lightning',
-  211: 'lightning',
-  212: 'lightning',
-  221: 'lightning',
-  230: 'lightning',
-  231: 'lightning',
-  232: 'lightning',
-
-  300: 'drizzle',
-  301: 'drizzle',
-  302: 'drizzle',
-  310: 'drizzle',
-  311: 'drizzle',
-  312: 'drizzle',
-  313: 'drizzle',
-  314: 'drizzle',
-  321: 'drizzle',
-
-  500: 'rainy-day',
-  501: 'rainy-day',
-  502: 'rainy-day',
-  503: 'rainy-day',
-  504: 'rainy-day',
-  511: 'rainy-day',
-  520: 'rainy-day',
-  521: 'rainy-day',
-  522: 'rainy-day',
-  531: 'rainy-day',
-
-  600: 'snow-cloud',
-  601: 'snow-cloud',
-  602: 'snow-cloud',
-  611: 'sleet',
-  612: 'sleet',
-  615: 'snow-cloud',
-  616: 'snow-cloud',
-  620: 'hail',
-  621: 'hail',
-  622: 'hail-storm',
-
-  701: 'mist',
-  711: 'smog',
-  741: 'foggy',
-  781: 'hurricane',
-
-  800: 'sunny-day',
-  801: 'partialy-cloudy',
-  802: 'cloudy-day',
-  803: 'cloudy-day',
-  804: 'cloudy-day',
-  805: 'cloudy-day'
-};
-
+const between = (n, min, max) => min <= n && n <= max;
 const getElementsToStore = () => Math.floor(window.innerWidth / 300) - 1;
 
-class Weather extends React.Component {
-  state = {
-    city: 'Berlin,de',
-    forecast: null,
-    current: null,
-    elementsToStore: getElementsToStore()
-  };
+const Weather = () => {
+    const location = useContext(LocationContext);
+    const city = location.city;
+    const [forecast, setForecast] = useState(null);
+    const [current, setCurrent] = useState(null);
+    const [elementsToStore, setElementsToStore] = useState(getElementsToStore());
 
-  getIcon = id => iconStatusMap[id] ? iconStatusMap[id] : 'temperature';
-
-  componentDidMount() {
-    //Current
-    //https://api.openweathermap.org/data/2.5/weather?city=Berlin,de&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
-
-    //5days
-    //https://api.openweathermap.org/data/2.5/forecast?q=Berlin,de&units=metric&appid=eb5808ab05f337d65c0d10f174014a7b
-
-    //Description
-    //https://openweathermap.org/weather-conditions
-
-    const calledAt = localStorage.getItem('calledAt');
-    const forecast = localStorage.getItem('forecast');
-    const current = localStorage.getItem('current');
-
-    window.onresize = () => {
-      this.setState(() => ({
-        elementsToStore: getElementsToStore()
-      }))
+    const getIcon = id => {
+        switch (true) {
+            case between(id, 200, 232):
+                return 'lighting';
+            case between(id, 300, 321):
+                return 'drizzle';
+            case between(id, 500, 531):
+                return 'rainy-day';
+            case between(id, 600, 602):
+                return 'snow-cloud';
+            case between(id, 611, 612):
+                return 'sleet';
+            case between(id, 615, 616):
+                return 'snow-cloud';
+            case between(id, 620, 621):
+                return 'hail';
+            case id === 622:
+                return 'hail-storm';
+            case id === 701:
+                return 'mist';
+            case id === 711:
+                return 'smog';
+            case id === 741:
+                return 'foggy';
+            case id === 781:
+                return 'hurricane';
+            case id === 800:
+                return 'sunny-day';
+            case id === 801:
+                return 'partialy-cloudy';
+            case between(id, 802, 805):
+                return 'cloudy-day';
+            default:
+                return 'temperature';
+        }
     };
 
-    if (calledAt && moment().diff(moment(calledAt), 'minutes') < 10) {
-      this.setState(() => ({
-        current: JSON.parse(current),
-        forecast: JSON.parse(forecast)
-      }));
 
-      console.log('local forecast', JSON.parse(forecast));
-      console.log('local current', JSON.parse(current));
-    } else {
-      (async () => {
-        const current = await window.fetch(`${WEATHER_API_URL}&q=${this.state.city}`).then(response => response.json());
-        const forecast = await window.fetch(`${FORECAST_API_URL}&q=${this.state.city}`)
-          .then(response => response.json())
-          .then(result => result.list.filter(inFuture));
+    useEffect(() => {
+        //Current
+        //https://api.openweathermap.org/data/2.5/weather?city=Berlin,de&units=metric&appid=${APP_ID}
 
-        localStorage.setItem('calledAt', moment().format());
-        localStorage.setItem('current', JSON.stringify(current));
-        localStorage.setItem('forecast', JSON.stringify(forecast));
+        //5days
+        //https://api.openweathermap.org/data/2.5/forecast?q=Berlin,de&units=metric&appid=${APP_ID}
 
-        this.setState(() => ({
-          current,
-          forecast
-        }));
+        //Description
+        //https://openweathermap.org/weather-conditions
 
-        console.log('call', current, 'current');
-        console.log('call', forecast, 'forecast');
-      })();
-    }
-  }
+        const calledAt = localStorage.getItem('calledAt');
+        const storedForecast = localStorage.getItem('forecast');
+        const storedCurrent = localStorage.getItem('current');
 
-  render() {
+
+        if (calledAt && moment().diff(moment(calledAt), 'minutes') < 10) {
+            setForecast(JSON.parse(storedForecast));
+            setCurrent(JSON.parse(storedCurrent));
+
+            // console.log('local forecast', JSON.parse(forecast));
+            // console.log('local current', JSON.parse(current));
+        } else if (location?.city) {
+            (async () => {
+                const fetchedCurrent = await window.fetch(`${WEATHER_API_URL}&lat=${location.coordinates.lat}&lon=${location.coordinates.lon}`).then(response => response.json());
+                const fetchedForecast = await window.fetch(`${FORECAST_API_URL}&lat=${location.coordinates.lat}&lon=${location.coordinates.lon}`)
+                    .then(response => response.json())
+                    .then(result => result.list.filter(inFuture));
+
+                localStorage.setItem('calledAt', moment().format());
+                localStorage.setItem('current', JSON.stringify(fetchedCurrent));
+                localStorage.setItem('forecast', JSON.stringify(fetchedForecast));
+
+                setCurrent(fetchedCurrent);
+                setForecast(fetchedForecast);
+
+                // console.log('call', current, 'current');
+                // console.log('call', forecast, 'forecast');
+            })();
+        }
+
+        window.onresize = () => {
+            setElementsToStore(getElementsToStore())
+        };
+    }, [location]);
+
     return (
-      <div className='Weather'>
-        {
-          (this.state.current) ?
-            <WeatherItem
-              temperature={Math.floor(this.state.current.main.temp)}
-              icon={this.getIcon(this.state.current.weather[0].id)}
-              wind={this.state.current.wind.speed}
-              size={'medium'}
-              time={'Now'}
-            >
-              <div>Now</div>
-            </WeatherItem>
-            : null
-        }
-        {
-          (this.state.forecast) ?
-            this.state.forecast.slice(0, this.state.elementsToStore).map(it => (
-              <WeatherItem
-                temperature={Math.floor(it.main.temp)}
-                icon={this.getIcon(it.weather[0].id)}
-                wind={it.wind.speed}
-                key={it.dt}
-                size={'small'}
-              >
-                <div>{moment(it.dt_txt).format('DD MMM')}</div>
-                <div>{moment(it.dt_txt).format('HH:mm')}</div>
-              </WeatherItem>
-            ))
-            : null
-        }
-      </div>
-    )
-  }
-}
+        <div className='Weather'>
+            {
+                (current) ?
+                    <WeatherItem
+                        temperature={Math.floor(current.main.temp)}
+                        icon={getIcon(current.weather[0].id)}
+                        wind={current.wind.speed.toFixed(1)}
+                        size={'medium'}
+                        time={'Now'}
+                        city={city}
+                    >
+                        <div>Now</div>
+                    </WeatherItem>
+                    : null
+            }
+            {
+                (forecast) ?
+                    forecast.slice(0, elementsToStore).map(it => (
+                        <WeatherItem
+                            temperature={Math.floor(it.main.temp)}
+                            icon={getIcon(it.weather[0].id)}
+                            wind={it.wind.speed.toFixed(1)}
+                            key={it.dt}
+                            size={'small'}
+                        >
+                            <div>{moment(it.dt_txt).format('DD MMM')}</div>
+                            <div>{moment(it.dt_txt).format('HH:mm')}</div>
+                        </WeatherItem>
+                    ))
+                    : null
+            }
+        </div>
+    );
+};
 
 export default Weather;

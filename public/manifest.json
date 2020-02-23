@@ -9,7 +9,8 @@
     "128": "assets/img/logo.png"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "geolocation"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"

@@ -6,7 +6,8 @@
     position: relative;
 }
 
-.Clock .date {
+.Clock .date,
+.Clock .city {
     font-size: 1.5rem;
     font-weight: 600;
 }

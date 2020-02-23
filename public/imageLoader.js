@@ -1,6 +1,6 @@
 //TODO - get screen size and adjust download dimensions
 const img = new Image();
-const imgSrc = `https://source.unsplash.com/random/1920x1080/?europe,nature,night,city`;
+const imgSrc = `https://source.unsplash.com/random/1920x1080/?city,berlin`;
 img.crossOrigin = "anonymous";
 img.src = imgSrc;
 //TODO: move to config instead;
@@ -37,8 +37,8 @@ img.addEventListener('load', function () {
   const brightness = Math.floor(colorSum / (img.width * img.height));
 
   try {
-    localStorage.setItem('img', dataUrl);
-    localStorage.setItem('brightness', brightness);
+    localStorage.setItem('imgData', dataUrl);
+    localStorage.setItem('brightness', brightness.toString());
   } catch (e) {
     console.log('Image is too big')
   }
