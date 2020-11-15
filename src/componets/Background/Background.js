@@ -7,8 +7,10 @@ const Background = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             const imgData = localStorage.getItem('imgData');
-            if(!backgroundImage && imgData){
+            if (!backgroundImage && imgData) {
                 setBackgroundImage(localStorage.getItem('imgData'));
+                clearInterval(interval);
+            } else {
                 clearInterval(interval);
             }
         }, 1000)

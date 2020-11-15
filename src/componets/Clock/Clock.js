@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useMemo, useContext, useEffect } from 'react';
 import moment from 'moment';
 import { LocationContext } from '../../contextProviders/LocationContext';
 
@@ -6,10 +6,10 @@ import Hexagon from '../Background/Hexagon'
 import './Clock.css';
 
 const Clock = () => {
-    const getDateData = () => ({
+    const getDateData = () => useMemo(() => ({
         time: moment().format('HH:mm'),
         date: moment().format('DD MMM YYYY')
-    });
+    }), []);
 
     const location = useContext(LocationContext);
 
@@ -17,9 +17,11 @@ const Clock = () => {
     const [data, setData] = useState(getDateData());
 
     useEffect(() => {
-        setInterval(() => {
+        const interval = setInterval(() => {
             setData(getDateData());
         }, 1000);
+
+        return clearInterval(interval);
     }, [data]);
 
     return (
