@@ -6,10 +6,10 @@ import Hexagon from '../Background/Hexagon'
 import './Clock.css';
 
 const Clock = () => {
-    const getDateData = () => useMemo(() => ({
+    const getDateData = () => ({
         time: moment().format('HH:mm'),
         date: moment().format('DD MMM YYYY')
-    }), []);
+    });
 
     const location = useContext(LocationContext);
 
