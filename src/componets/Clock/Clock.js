@@ -21,7 +21,7 @@ const Clock = () => {
             setData(getDateData());
         }, 1000);
 
-        return clearInterval(interval);
+        return () => clearInterval(interval);
     }, [data]);
 
     return (
